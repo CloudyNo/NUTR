@@ -28,8 +28,8 @@ def send():
 
 def rec():
     while True:
-        data = (mySocket.recvfrom(SIZE))
-        print(data[0])
+        data = (mySocket.recvfrom(SIZE)[0])
+        print(data)
 
 def run():
     p = T(target=rec)
