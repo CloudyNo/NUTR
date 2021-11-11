@@ -2,8 +2,6 @@
 
 from socket import socket, gethostbyname, AF_INET, SOCK_DGRAM
 from threading import Thread as T
-from time import sleep
-from os import system, name
 
 s = socket(AF_INET, SOCK_DGRAM)
 s.connect(('8.8.8.8', 1))
@@ -29,7 +27,7 @@ def send():
 def rec():
     while True:
         data = (mySocket.recvfrom(SIZE)[0])
-        print(data)
+        print(SERVER_IP, ": ", data.decode('utf8'))
 
 def run():
     p = T(target=rec)
