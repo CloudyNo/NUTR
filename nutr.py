@@ -16,8 +16,6 @@ mySocket = socket( AF_INET, SOCK_DGRAM )
 mySocket.bind( (hostName, PORT_NUMBER) )
 
 SERVER_IP = input("Connect to: ")
-print()
-print("Conversation with", SERVER_IP)
 
 def send():
     while True:
@@ -27,12 +25,28 @@ def send():
 def rec():
     while True:
         data = (mySocket.recvfrom(SIZE)[0])
-        print(SERVER_IP, ": ", data.decode('utf8'))
+        print(data.decode('utf8'))
 
 def run():
     p = T(target=rec)
     p2 = T(target=send)
+    p3 = T(target=recping)
     p.start()
     p2.start()
+    p3.start()
 
+def sping():
+    for i in range(3):
+        mySocket.sendto(("ping").encode('utf-8'),(SERVER_IP,PORT_NUMBER))
+        if (mySocket.recvfrom(SIZE)[0]).decode('utf-8') == "ping":
+            print(i)
+            return i
+
+def recping():
+    while True:
+        if (mySocket.recvfrom(SIZE)[0]).decode('utf-8') == "ping":
+            dar = (mySocket.recvfrom(SIZE)[1]).decode('utf-8')
+            mySocket.sendto(("ping").encode('utf-8'),(dar))
+
+sping()
 run()
